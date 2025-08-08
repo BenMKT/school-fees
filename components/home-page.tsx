@@ -162,7 +162,7 @@ export default function SchoolFeesLanding() {
               </Link>
               <Link href="/register">
                 <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                  Get Started
+                  Register
                 </Button>
               </Link>
             </nav>
@@ -198,6 +198,12 @@ export default function SchoolFeesLanding() {
                   Dashboard
                 </Link>
                 <Link
+                  href="/parent"
+                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                >
+                  Parent Portal
+                </Link>
+                <Link
                   href="/contact"
                   className="text-gray-600 hover:text-purple-600 transition-colors"
                 >
@@ -214,7 +220,7 @@ export default function SchoolFeesLanding() {
                   </Link>
                   <Link href="/register">
                     <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                      Get Started
+                      Register
                     </Button>
                   </Link>
                 </div>
