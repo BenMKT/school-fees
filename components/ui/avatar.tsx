@@ -17,7 +17,10 @@ const Avatar = React.forwardRef<
 ));
 Avatar.displayName = 'Avatar';
 
-type AvatarImageProps = Omit<ImageProps, 'fill' | 'width' | 'height'> & {
+type AvatarImageProps = Omit<
+  ImageProps,
+  'fill' | 'width' | 'height' | 'alt'
+> & {
   alt?: string;
 };
 
