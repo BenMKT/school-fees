@@ -74,7 +74,7 @@ const quickStats = [
 ];
 
 export function PaymentStatusOverview() {
-  const totalAmount = paymentStats.reduce((sum, stat) => sum + stat.amount, 0);
+  // const totalAmount = paymentStats.reduce((sum, stat) => sum + stat.amount, 0);
 
   return (
     <motion.div
