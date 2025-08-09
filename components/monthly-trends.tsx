@@ -9,12 +9,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
-import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from 'recharts';
 import { TrendingUp, Calendar } from 'lucide-react';
 
 const monthlyData = [
@@ -155,7 +158,9 @@ export function MonthlyTrends() {
               <LineChart data={monthlyData}>
                 <XAxis dataKey="month" />
                 <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <Tooltip
+                  content={(props) => <ChartTooltipContent {...props} />}
+                />
                 <Line
                   type="monotone"
                   dataKey="students"
