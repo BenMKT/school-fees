@@ -26,7 +26,7 @@ const menuItems = [
   { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
 ];
 
-export default function RegisterLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
