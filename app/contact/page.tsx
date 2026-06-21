@@ -185,10 +185,9 @@ export default function ContactPage() {
           </h1>
 
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Ready to revolutionize your school&apos;s fee management? Our team
+            Ready to revolutionize your school&apos;s management? Our team
             of education technology experts is here to help you create a
-            seamless, stress-free payment experience for your entire school
-            community.
+            seamless, stress-free management system experience for your entire school.
           </p>
         </motion.div>
 
@@ -370,7 +369,7 @@ export default function ContactPage() {
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
                       <Heart className="w-4 h-4 text-red-500" />
                       We&apos;re excited to help transform your school&apos;s
-                      fee management!
+                      overall management!
                     </div>
                   </motion.div>
                 )}
@@ -409,10 +408,10 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">
-                        +254 712 345 678
+                        +256 712 345 678
                       </p>
                       <p className="text-sm text-gray-600">
-                        Mon-Fri, 8AM-6PM EAT
+                        Mon-Fri, 8AM-6PM UTC+3
                       </p>
                     </div>
                   </motion.div>
@@ -426,7 +425,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">
-                        hello@schoolfees.com
+                        hello@esms.com
                       </p>
                       <p className="text-sm text-gray-600">
                         We respond within 2 hours
@@ -443,7 +442,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">
-                        Nairobi, Kenya
+                        Kampala, Uganda
                       </p>
                       <p className="text-sm text-gray-600">
                         Serving schools nationwide
@@ -485,7 +484,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="text-xl font-bold">Why Schools Love Us</h3>
                     <p className="text-blue-100">
-                      Trusted by 500+ institutions
+                      Trusted by 15,000+ institutions
                     </p>
                   </div>
                 </div>
@@ -497,7 +496,7 @@ export default function ContactPage() {
                   >
                     <Users className="w-5 h-5 text-blue-200" />
                     <span className="text-blue-100">
-                      Serving 100,000+ students in Kenya
+                      Serving 5,000,000+ students in Uganda
                     </span>
                   </motion.div>
 
@@ -507,7 +506,7 @@ export default function ContactPage() {
                   >
                     <CreditCard className="w-5 h-5 text-blue-200" />
                     <span className="text-blue-100">
-                      Ksh 100M+ in payments processed securely
+                      USD 100M+ in payments processed securely
                     </span>
                   </motion.div>
 
@@ -545,12 +544,12 @@ export default function ContactPage() {
                     <span className="text-sm text-blue-100">4.9/5 rating</span>
                   </div>
                   <p className="text-sm text-blue-100">
-                    &quot;SchoolFees App transformed our payment process
+                    &quot;E-SMS transformed our management process
                     completely. Parents love the convenience, and we love the
                     automation!&quot;
                   </p>
                   <p className="text-xs text-blue-200 mt-2">
-                    - Dr.David Okello, Principal at Kibuli Secondary School
+                    - Dr.David Batuka, Principal at Kibuli Secondary School
                   </p>
                 </div>
               </CardContent>
@@ -583,11 +582,11 @@ export default function ContactPage() {
         <motion.div className="text-center mt-16" variants={itemVariants}>
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl max-w-4xl mx-auto">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">
-              Ready to Transform Your School&apos;s Fee Management?
+              Ready to Transform Your School&apos;s Management?
             </h3>
             <p className="text-gray-600 mb-6 text-lg">
-              Join hundreds of schools already using SchoolFees App to
-              streamline payments, reduce administrative burden, and create
+              Join thousands of schools already using E-SMS to
+              streamline management, reduce administrative burden, and create
               happier school communities.
             </p>
             <div className="flex flex-wrap justify-center gap-4">

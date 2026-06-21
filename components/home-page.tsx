@@ -1,13 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import {
@@ -24,12 +18,38 @@ import {
   ArrowRight,
   Menu,
   X,
+  UserPlus,
+  ClipboardList,
+  CalendarDays,
+  BookOpen,
+  MessageSquare,
+  Calendar,
+  Calculator,
+  Briefcase,
+  UserCheck,
+  Library,
+  Sparkles,
+  type LucideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
 
-export default function SchoolFeesLanding() {
+interface ModuleItem {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  href: string;
+  featured?: boolean;
+}
+
+interface ModulePillar {
+  title: string;
+  color: string;
+  modules: ModuleItem[];
+}
+
+export default function ESchoolManagerLanding() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fadeInUp = {
@@ -46,70 +66,194 @@ export default function SchoolFeesLanding() {
     },
   };
 
-  const features = [
+  const modulePillars: ModulePillar[] = [
+    {
+      title: 'People & Records',
+      color: 'from-purple-500 to-pink-500',
+      modules: [
+        {
+          icon: UserPlus,
+          title: 'Admission',
+          description:
+            'Registration for student, parent/guardian, and emergency contacts',
+          href: '/dashboard/admission',
+        },
+        {
+          icon: Users,
+          title: 'Student Management',
+          description: 'Search, add, and update records with full history',
+          href: '/dashboard/students',
+        },
+        {
+          icon: UserCheck,
+          title: 'Teachers Management',
+          description:
+            'Connect administrators, teachers, parents, and students',
+          href: '/dashboard/teachers',
+        },
+      ],
+    },
+    {
+      title: 'Teaching & Learning',
+      color: 'from-blue-500 to-cyan-500',
+      modules: [
+        {
+          icon: ClipboardList,
+          title: 'Examination Management',
+          description:
+            'Schedule exams, input results, and visualize performance',
+          href: '/dashboard/exams',
+        },
+        {
+          icon: CalendarDays,
+          title: 'Timetable Management',
+          description:
+            'Drag-and-drop timetabling for classes, teachers, and rooms',
+          href: '/dashboard/timetable',
+        },
+        {
+          icon: BookOpen,
+          title: 'Classes',
+          description: 'Organize grades, sections, and class assignments',
+          href: '/dashboard/classes',
+        },
+      ],
+    },
+    {
+      title: 'Operations',
+      color: 'from-orange-500 to-amber-500',
+      modules: [
+        {
+          icon: Library,
+          title: 'Library Management',
+          description: 'Issues, renewals, reservations, and stock status',
+          href: '/dashboard/library',
+        },
+        {
+          icon: MessageSquare,
+          title: 'Digital Messaging',
+          description: 'Notices, SMS, and alerts institution-wide',
+          href: '/dashboard/messaging',
+        },
+        {
+          icon: Calendar,
+          title: 'Scheduling',
+          description: 'Automate class, exam, and event scheduling',
+          href: '/dashboard/scheduling',
+        },
+      ],
+    },
+    {
+      title: 'Finance & Admin',
+      color: 'from-emerald-500 to-teal-500',
+      modules: [
+        {
+          icon: CreditCard,
+          title: 'Fee Management',
+          description:
+            'Track tuition, library, computer, and caution fees with ease',
+          href: '/dashboard/fees',
+          featured: true,
+        },
+        {
+          icon: Calculator,
+          title: 'Financial Accounting',
+          description: 'Schemes, cashbooks, and audit-ready records',
+          href: '/dashboard/accounting',
+        },
+        {
+          icon: Briefcase,
+          title: 'HR Management',
+          description: 'Payroll, benefits, and staff compliance',
+          href: '/dashboard/hr',
+        },
+      ],
+    },
+  ];
+
+  const crossCuttingBenefits = [
     {
       icon: CreditCard,
-      title: 'Easy Payment Processing',
-      description:
-        'Accept payments via multiple channels including mobile money, bank transfers, and cards',
+      title: 'Easy Payments',
+      description: 'Mobile money, bank transfers, and cards',
     },
     {
       icon: Bell,
       title: 'Smart Notifications',
-      description:
-        'Automated reminders for due dates, payment confirmations, and important updates',
+      description: 'Automated reminders and confirmations',
     },
     {
       icon: BarChart3,
       title: 'Detailed Analytics',
-      description:
-        'Track payment trends, generate reports, and gain insights into fee collection',
+      description: 'Reports and data-driven decisions',
     },
     {
       icon: Shield,
       title: 'Secure & Reliable',
-      description:
-        'Bank-level security with encrypted transactions and data protection',
+      description: 'Bank-level encryption and protection',
     },
     {
       icon: Smartphone,
-      title: 'Mobile-First Design',
-      description:
-        'Optimized for mobile devices with offline capabilities for remote areas',
+      title: 'Mobile-First',
+      description: 'Online access for staff, students, and parents',
     },
     {
       icon: Users,
       title: 'Multi-User Access',
-      description:
-        'Role-based access for administrators, teachers, parents, and students',
+      description: 'Role-based portals for every stakeholder',
     },
+  ];
+
+  const whyUsChecklist = [
+    'Admission & student records',
+    'Exams & timetables',
+    'Library & messaging',
+    'Fees & accounting',
+    'HR & payroll',
+    'Scheduling & events',
   ];
 
   const testimonials = [
     {
-      name: 'Sarah Mungai',
+      name: 'Sarah Mubiru',
       role: 'School Administrator',
       school: 'Greenwood High School',
       content:
-        'SchoolFees has transformed how we handle fee collection. Payment tracking is now effortless!',
+        'E-School Management System replaced six different spreadsheets. Fee collection and admissions now live in one place.',
       rating: 5,
     },
     {
-      name: 'David Kipkorir',
+      name: 'David Batuuka',
       role: 'Parent',
       school: 'Riverside Academy',
       content:
-        "Finally, a simple way to pay school fees and track my child's payment history. Highly recommended!",
+        "I pay fees, check exam results, and read school notices—all from my phone. It's exactly what parents need.",
       rating: 5,
     },
     {
-      name: 'Dr. Amara Oketch',
+      name: 'Prof. Michael Kanyamunyiri',
+      role: 'Head of Mathematics',
+      school: 'Metro Tech Institute',
+      content:
+        'The timetable builder and exam reporting save our department hours every week. Drag-and-drop just works.',
+      rating: 5,
+    },
+    {
+      name: 'Dr. Amara Kyeyune',
       role: 'Principal',
       school: 'Unity International School',
       content:
-        'The analytics and reporting features help us make better financial decisions for our school.',
+        'From admissions to accounting, we finally have audit-ready records across every financial year.',
       rating: 5,
     },
+  ];
+
+  const navLinks = [
+    { href: '#modules', label: 'Modules' },
+    { href: '#why-us', label: 'Why E-SMS' },
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/parent', label: 'Parent Portal' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -128,30 +272,20 @@ export default function SchoolFeesLanding() {
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                SchoolFees App
+                Educational Schools Management System (E-SMS)
               </span>
             </motion.div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link
-                href="/dashboard"
-                className="text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/parent"
-                className="text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                Parent Portal
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                Contact Us
-              </Link>
+            <nav className="hidden lg:flex items-center space-x-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-sm"
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link href="/login">
                 <Button
                   variant="outline"
@@ -160,18 +294,17 @@ export default function SchoolFeesLanding() {
                   Sign In
                 </Button>
               </Link>
-              <Link href="/register">
+              <Link href="/admission">
                 <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                  Register
+                  Apply Now
                 </Button>
               </Link>
             </nav>
 
-            {/* Mobile Menu Button */}
             <button
               type="button"
               aria-label="Toggle navigation"
-              className="md:hidden p-2"
+              className="lg:hidden p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
@@ -182,45 +315,35 @@ export default function SchoolFeesLanding() {
             </button>
           </div>
 
-          {/* Mobile Navigation */}
           {isMenuOpen && (
             <motion.div
-              className="md:hidden py-4 border-t border-gray-100"
+              className="lg:hidden py-4 border-t border-gray-100"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
             >
               <div className="flex flex-col space-y-4">
-                <Link
-                  href="/dashboard"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/parent"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
-                >
-                  Parent Portal
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
-                >
-                  Contact Us
-                </Link>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-gray-600 hover:text-purple-600 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
                 <div className="flex flex-col space-y-2 pt-4">
                   <Link href="/login">
                     <Button
                       variant="outline"
-                      className="border-purple-200 text-purple-600 hover:bg-purple-50"
+                      className="border-purple-200 text-purple-600 hover:bg-purple-50 w-full"
                     >
                       Sign In
                     </Button>
                   </Link>
-                  <Link href="/register">
-                    <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                      Register
+                  <Link href="/admission">
+                    <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full">
+                      Apply Now
                     </Button>
                   </Link>
                 </div>
@@ -230,19 +353,15 @@ export default function SchoolFeesLanding() {
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="pt-24 pb-12 md:pt-32 md:pb-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50" />
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10" />
 
-        {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-20 blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
-            }}
+            animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
             transition={{
               duration: 20,
               repeat: Number.POSITIVE_INFINITY,
@@ -251,10 +370,7 @@ export default function SchoolFeesLanding() {
           />
           <motion.div
             className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full opacity-20 blur-3xl"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              rotate: [360, 180, 0],
-            }}
+            animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
             transition={{
               duration: 25,
               repeat: Number.POSITIVE_INFINITY,
@@ -271,7 +387,7 @@ export default function SchoolFeesLanding() {
               transition={{ duration: 0.6 }}
             >
               <Badge className="mb-6 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">
-                🎓 Trusted by 500+ Schools Nationwide
+                🎓 11+ Modules · Trusted by 15,000+ Schools
               </Badge>
             </motion.div>
 
@@ -282,10 +398,10 @@ export default function SchoolFeesLanding() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
-                Manage Your School Fees
+                Run Your Entire School
               </span>
               <br />
-              <span className="text-gray-900">With Ease</span>
+              <span className="text-gray-900">From One Platform</span>
             </motion.h1>
 
             <motion.p
@@ -294,9 +410,9 @@ export default function SchoolFeesLanding() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Streamline fee collection, automate reminders, and provide parents
-              with a seamless payment experience. Join thousands of schools
-              already using SchoolFees App.
+              Admissions to accounting in one place. Replace paperwork and
+              spreadsheets with drag-drop interfaces and online access for
+              staff, students, and parents.
             </motion.p>
 
             <motion.div
@@ -305,20 +421,24 @@ export default function SchoolFeesLanding() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
-              >
-                Get Started Free
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-purple-200 text-purple-600 hover:bg-purple-50 px-8 py-4 text-lg font-semibold"
-              >
-                Watch Demo
-              </Button>
+              <Link href="/dashboard">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                >
+                  Get Started Free
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="#modules">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-purple-200 text-purple-600 hover:bg-purple-50 px-8 py-4 text-lg font-semibold"
+                >
+                  Explore Modules
+                </Button>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -333,7 +453,7 @@ export default function SchoolFeesLanding() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
-                <span>Absolutely free forever</span>
+                <span>All-in-one platform</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
@@ -344,8 +464,8 @@ export default function SchoolFeesLanding() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
+      {/* Module Hub */}
+      <section id="modules" className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -355,121 +475,251 @@ export default function SchoolFeesLanding() {
             viewport={{ once: true }}
           >
             <Badge className="mb-4 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">
-              Features
+              Module Hub
             </Badge>
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
-              Everything You Need to
+              Everything Your School
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {' '}
-                Succeed
+                Needs
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Powerful features designed to make school fee management
-              effortless for administrators, parents, and students.
+              11+ connected modules organized by how your team actually works—
+              from enrolling students to closing the books.
             </p>
           </motion.div>
 
+          <div className="grid lg:grid-cols-2 gap-8">
+            {modulePillars.map((pillar, pillarIndex) => (
+              <motion.div
+                key={pillar.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: pillarIndex * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="h-full border-0 shadow-lg overflow-hidden">
+                  <div className={`h-1.5 bg-gradient-to-r ${pillar.color}`} />
+                  <CardHeader>
+                    <CardTitle className="text-xl">{pillar.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {pillar.modules.map((mod) => (
+                      <Link key={mod.title} href={mod.href}>
+                        <div
+                          className={`flex items-start gap-4 p-4 rounded-lg transition-all duration-300 hover:shadow-md group ${
+                            mod.featured
+                              ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 hover:border-emerald-300'
+                              : 'bg-gray-50 hover:bg-purple-50'
+                          }`}
+                        >
+                          <div
+                            className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                              mod.featured
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
+                                : 'bg-gradient-to-r from-purple-100 to-pink-100 group-hover:from-purple-200 group-hover:to-pink-200'
+                            }`}
+                          >
+                            <mod.icon
+                              className={`w-5 h-5 ${
+                                mod.featured ? 'text-white' : 'text-purple-600'
+                              }`}
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold text-gray-900">
+                                {mod.title}
+                              </h3>
+                              {mod.featured && (
+                                <Badge className="bg-emerald-600 text-white text-xs">
+                                  Popular
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              {mod.description}
+                            </p>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all shrink-0 mt-1" />
+                        </div>
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Cross-cutting benefits */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              Built for Every Role
+            </h3>
+            <p className="text-gray-600">
+              Cross-cutting capabilities that power every module
+            </p>
+          </motion.div>
+          <motion.div
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
           >
-            {features.map((feature, index) => (
+            {crossCuttingBenefits.map((benefit, index) => (
               <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-2">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <feature.icon className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <CardTitle className="text-xl font-semibold text-gray-900">
-                      {feature.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-gray-600 text-base leading-relaxed">
-                      {feature.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
+                <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
+                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center shrink-0">
+                    <benefit.icon className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">
+                      {benefit.title}
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Why Schools Choose */}
+      <section id="why-us" className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Badge className="mb-4 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">
+                <Sparkles className="w-3 h-3 mr-1 inline" />
+                Why Schools Choose E-SMS
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                All-in-One Platform.
+                <br />
+                <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  User-Friendly Design.
+                </span>
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                11+ modules replace paperwork and spreadsheets. Drag-drop
+                interfaces and online access for staff, students, and parents—
+                so everyone stays connected.
+              </p>
+              <ul className="space-y-3">
+                {whyUsChecklist.map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0" />
+                    <span className="text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-2 gap-4"
+            >
+              {[
+                {
+                  icon: LayersIcon,
+                  title: 'All-in-One',
+                  desc: '11+ modules, one login',
+                },
+                {
+                  icon: Smartphone,
+                  title: 'Online Access',
+                  desc: 'Staff, students, parents',
+                },
+                {
+                  icon: CalendarDays,
+                  title: 'Drag & Drop',
+                  desc: 'Timetables made easy',
+                },
+                {
+                  icon: Shield,
+                  title: 'Audit-Ready',
+                  desc: 'Clear financial visibility',
+                },
+              ].map((item) => (
+                <Card
+                  key={item.title}
+                  className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                      <item.icon className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <h4 className="font-semibold text-gray-900 mb-1">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
       <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div>
-              <motion.div
-                className="text-4xl md:text-5xl font-bold mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true }}
-              >
-                500+
-              </motion.div>
-              <div className="text-purple-100">Schools Trust Us</div>
-            </div>
-            <div>
-              <motion.div
-                className="text-4xl md:text-5xl font-bold mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                50K+
-              </motion.div>
-              <div className="text-purple-100">Active Students</div>
-            </div>
-            <div>
-              <motion.div
-                className="text-4xl md:text-5xl font-bold mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                Ksh 100M+
-              </motion.div>
-              <div className="text-purple-100">Fees Processed</div>
-            </div>
-            <div>
-              <motion.div
-                className="text-4xl md:text-5xl font-bold mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                99.8%
-              </motion.div>
-              <div className="text-purple-100">Uptime</div>
-            </div>
+            {[
+              { value: '11+', label: 'Integrated Modules' },
+              { value: '15,000+', label: 'Schools Trust Us' },
+              { value: '5,000,000+', label: 'Active Students' },
+              { value: '99.8%', label: 'Uptime' },
+            ].map((stat, i) => (
+              <div key={stat.label}>
+                <motion.div
+                  className="text-4xl md:text-5xl font-bold mb-2"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  {stat.value}
+                </motion.div>
+                <div className="text-purple-100">{stat.label}</div>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Testimonials */}
       <section id="testimonials" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <Badge className="mb-4 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">
@@ -482,13 +732,10 @@ export default function SchoolFeesLanding() {
                 Nationwide
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See what educators and parents are saying about SchoolFees.
-            </p>
           </motion.div>
 
           <motion.div
-            className="grid md:grid-cols-3 gap-8"
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
@@ -502,21 +749,21 @@ export default function SchoolFeesLanding() {
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star
                           key={i}
-                          className="w-5 h-5 text-yellow-400 fill-current"
+                          className="w-4 h-4 text-yellow-400 fill-current"
                         />
                       ))}
                     </div>
-                    <p className="text-gray-600 mb-6 leading-relaxed">
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm">
                       &quot;{testimonial.content}&quot;
                     </p>
                     <div>
-                      <div className="font-semibold text-gray-900">
+                      <div className="font-semibold text-gray-900 text-sm">
                         {testimonial.name}
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-xs text-gray-500">
                         {testimonial.role}
                       </div>
-                      <div className="text-sm text-purple-600">
+                      <div className="text-xs text-purple-600">
                         {testimonial.school}
                       </div>
                     </div>
@@ -528,14 +775,13 @@ export default function SchoolFeesLanding() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section id="pricing" className="py-20 bg-white">
+      {/* CTA */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <Badge className="mb-6 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">
@@ -545,30 +791,33 @@ export default function SchoolFeesLanding() {
               Transform Your School&apos;s
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {' '}
-                Fee Management
+                Operations
               </span>
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Join hundreds of schools that have already simplified their fee
-              collection process. Start your free trial today - no credit card
-              required.
+              Join thousands of schools running admissions, academics, and
+              finance on one platform. Start free—no credit card required.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
-              >
-                Start Free Trial
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-purple-200 text-purple-600 hover:bg-purple-50 px-8 py-4 text-lg font-semibold"
-              >
-                Schedule Demo
-              </Button>
+              <Link href="/dashboard">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                >
+                  Start Free Trial
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="/admission">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-purple-200 text-purple-600 hover:bg-purple-50 px-8 py-4 text-lg font-semibold"
+                >
+                  Submit Admission
+                </Button>
+              </Link>
             </div>
 
             <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500">
@@ -598,60 +847,83 @@ export default function SchoolFeesLanding() {
                 <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
                   <GraduationCap className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold">SchoolFees App</span>
+                <span className="text-xl font-bold">E-SMS</span>
               </div>
               <p className="text-gray-400 mb-4">
-                Making school fee management simple, secure, and efficient for
-                everyone.
+                All-in-one school management—from admission to accounting.
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
+              <h3 className="font-semibold mb-4">Modules</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    Features
+                  <Link
+                    href="/dashboard/admission"
+                    className="hover:text-white transition-colors"
+                  >
+                    Admission
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    Pricing
+                  <Link
+                    href="/dashboard/exams"
+                    className="hover:text-white transition-colors"
+                  >
+                    Examinations
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    Security
+                  <Link
+                    href="/dashboard/fees"
+                    className="hover:text-white transition-colors"
+                  >
+                    Fee Management
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    Integrations
+                  <Link
+                    href="/dashboard/library"
+                    className="hover:text-white transition-colors"
+                  >
+                    Library
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
+              <h3 className="font-semibold mb-4">Portals</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    About
+                  <Link
+                    href="/dashboard"
+                    className="hover:text-white transition-colors"
+                  >
+                    Admin Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    Blog
+                  <Link
+                    href="/parent"
+                    className="hover:text-white transition-colors"
+                  >
+                    Parent Portal
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    Careers
+                  <Link
+                    href="/admission"
+                    className="hover:text-white transition-colors"
+                  >
+                    Apply for Admission
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
+                  <Link
+                    href="/contact"
+                    className="hover:text-white transition-colors"
+                  >
                     Contact
                   </Link>
                 </li>
@@ -660,7 +932,7 @@ export default function SchoolFeesLanding() {
 
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-400 text-sm">
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
                     Help Center
@@ -673,12 +945,12 @@ export default function SchoolFeesLanding() {
                 </li>
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
-                    API Reference
+                    Privacy Policy
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
-                    Status
+                    Terms of Service
                   </Link>
                 </li>
               </ul>
@@ -688,32 +960,44 @@ export default function SchoolFeesLanding() {
           <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
               © {new Date().getFullYear()}{' '}
-              <Image
-                src="/AfriTekNovaLogo1.png"
-                className="w-12 h-12 inline"
-                alt="logo"
-                width={100}
-                height={100}
-              />{' '}
+              <Link
+                href="https://afriteknova.my.canva.site/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline"
+              >
+                <Image
+                  src="/AfriTekNovaLogo1.png"
+                  className="w-12 h-12 inline"
+                  alt="logo"
+                  width={100}
+                  height={100}
+                />
+              </Link>{' '}
               All rights reserved.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors text-sm"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors text-sm"
-              >
-                Terms of Service
-              </Link>
-            </div>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+function LayersIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0l8.57-3.9a1 1 0 0 0 0-1.83Z" />
+      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+    </svg>
   );
 }
