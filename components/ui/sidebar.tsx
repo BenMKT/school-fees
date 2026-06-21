@@ -6,7 +6,7 @@ import { Menu } from 'lucide-react';
 import { cn } from '@/app/lib/utils';
 import { Button } from '@/components/ui/button';
 
-interface SidebarTriggerProps extends React.ComponentProps<typeof Button> {}
+type SidebarTriggerProps = React.ComponentProps<typeof Button>;
 
 const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
