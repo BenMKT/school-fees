@@ -14,6 +14,9 @@ import {
   LayoutDashboard,
   ChevronLeft,
   ChevronRight,
+  ClipboardList,
+  CalendarDays,
+  Library,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
@@ -36,6 +39,21 @@ const menuItems = [
     icon: CreditCard,
     url: '/parent/payments',
     badge: '2 Due',
+  },
+  {
+    title: 'Academics',
+    icon: ClipboardList,
+    url: '/parent/academics',
+  },
+  {
+    title: 'Timetable',
+    icon: CalendarDays,
+    url: '/parent/timetable',
+  },
+  {
+    title: 'Library',
+    icon: Library,
+    url: '/parent/library',
   },
   {
     title: 'Messages',
@@ -105,7 +123,7 @@ export function ParentSidebar() {
               isExpanded ? 'opacity-100' : 'opacity-0 hidden'
             } transition-opacity duration-200`}
           >
-            <h2 className="text-lg font-semibold">SchoolFees</h2>
+            <h2 className="text-lg font-semibold">E-SMS</h2>
             <p className="text-sm text-muted-foreground">Parent Portal</p>
           </div>
         </div>

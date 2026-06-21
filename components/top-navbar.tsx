@@ -87,10 +87,10 @@ export function TopNavbar() {
             </motion.div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                SchoolFees
+                E-SMS
               </h1>
               <p className="text-xs text-gray-500 -mt-1">
-                Smart Fee Management
+                Smart Schools Management System
               </p>
             </div>
           </Link>

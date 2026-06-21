@@ -64,7 +64,9 @@ import {
   Clock,
   Eye,
   FileText,
+  History,
 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Mock student data
 interface Student {
@@ -85,6 +87,9 @@ interface Student {
   lastPayment: string;
   enrollmentDate: string;
   status: 'active' | 'inactive';
+  enrollmentType: 'current' | 'former';
+  graduationDate?: string;
+  history: { date: string; event: string }[];
   avatar: string;
 }
 
@@ -107,6 +112,12 @@ const studentsData: Student[] = [
     lastPayment: '2024-01-15',
     enrollmentDate: '2023-08-15',
     status: 'active',
+    enrollmentType: 'current',
+    history: [
+      { date: '2023-08-15', event: 'Enrolled in Grade 8 Section A' },
+      { date: '2024-01-10', event: 'Promoted to Grade 8 Section A' },
+      { date: '2024-01-15', event: 'Term 1 fees paid in full' },
+    ],
     avatar: 'ED',
   },
   {
@@ -127,6 +138,11 @@ const studentsData: Student[] = [
     lastPayment: '2023-12-20',
     enrollmentDate: '2022-08-15',
     status: 'active',
+    enrollmentType: 'current',
+    history: [
+      { date: '2022-08-15', event: 'Enrolled in Grade 10 Section B' },
+      { date: '2023-12-20', event: 'Partial fee payment received' },
+    ],
     avatar: 'MJ',
   },
   {
@@ -147,6 +163,11 @@ const studentsData: Student[] = [
     lastPayment: '2023-11-10',
     enrollmentDate: '2021-08-15',
     status: 'active',
+    enrollmentType: 'current',
+    history: [
+      { date: '2021-08-15', event: 'Enrolled in Grade 12 Section A' },
+      { date: '2023-11-10', event: 'Fee payment overdue notice sent' },
+    ],
     avatar: 'SW',
   },
   {
@@ -167,6 +188,8 @@ const studentsData: Student[] = [
     lastPayment: '2024-01-10',
     enrollmentDate: '2022-08-15',
     status: 'active',
+    enrollmentType: 'current',
+    history: [{ date: '2022-08-15', event: 'Enrolled in Grade 9 Section C' }],
     avatar: 'DB',
   },
   {
@@ -187,7 +210,63 @@ const studentsData: Student[] = [
     lastPayment: '2023-12-15',
     enrollmentDate: '2021-08-15',
     status: 'inactive',
+    enrollmentType: 'current',
+    history: [{ date: '2021-08-15', event: 'Enrolled in Grade 11 Section B' }],
     avatar: 'LA',
+  },
+  {
+    id: 'STU006',
+    name: 'Tommy Chen',
+    email: 'tommy.chen@email.com',
+    phone: '+1 (555) 678-9012',
+    grade: 'Grade 12',
+    section: 'A',
+    parentName: 'Wei Chen',
+    parentEmail: 'wei.chen@email.com',
+    parentPhone: '+1 (555) 678-9013',
+    address: '111 Graduate Lane, Springfield, IL 62706',
+    paymentStatus: 'paid',
+    totalFees: 3200,
+    paidAmount: 3200,
+    pendingAmount: 0,
+    lastPayment: '2024-05-01',
+    enrollmentDate: '2020-08-15',
+    status: 'inactive',
+    enrollmentType: 'former',
+    graduationDate: '2024-06-15',
+    history: [
+      { date: '2020-08-15', event: 'Enrolled in Grade 9 Section A' },
+      { date: '2022-06-10', event: 'Promoted to Grade 11' },
+      { date: '2024-06-15', event: 'Graduated - Grade 12' },
+    ],
+    avatar: 'TC',
+  },
+  {
+    id: 'STU007',
+    name: 'Aisha Hassan',
+    email: 'aisha.hassan@email.com',
+    phone: '+1 (555) 789-0123',
+    grade: 'Grade 12',
+    section: 'B',
+    parentName: 'Omar Hassan',
+    parentEmail: 'omar.hassan@email.com',
+    parentPhone: '+1 (555) 789-0124',
+    address: '222 Alumni Road, Springfield, IL 62707',
+    paymentStatus: 'paid',
+    totalFees: 3100,
+    paidAmount: 3100,
+    pendingAmount: 0,
+    lastPayment: '2023-12-01',
+    enrollmentDate: '2019-08-15',
+    status: 'inactive',
+    enrollmentType: 'former',
+    graduationDate: '2023-06-20',
+    history: [
+      { date: '2019-08-15', event: 'Enrolled in Grade 8 Section B' },
+      { date: '2021-06-12', event: 'Academic excellence award' },
+      { date: '2023-06-20', event: 'Graduated - Grade 12' },
+    ],
+    avatar: 'AH',
   },
 ];
 
@@ -198,6 +277,7 @@ export function StudentManagement() {
   const [gradeFilter, setGradeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [paymentFilter, setPaymentFilter] = useState('all');
+  const [enrollmentTab, setEnrollmentTab] = useState('current');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -216,7 +296,18 @@ export function StudentManagement() {
     const matchesPayment =
       paymentFilter === 'all' || student.paymentStatus === paymentFilter;
 
-    return matchesSearch && matchesGrade && matchesStatus && matchesPayment;
+    const matchesEnrollment =
+      enrollmentTab === 'all' ||
+      (enrollmentTab === 'current' && student.enrollmentType === 'current') ||
+      (enrollmentTab === 'former' && student.enrollmentType === 'former');
+
+    return (
+      matchesSearch &&
+      matchesGrade &&
+      matchesStatus &&
+      matchesPayment &&
+      matchesEnrollment
+    );
   });
 
   const handleSelectAll = (checked: boolean) => {
@@ -289,7 +380,8 @@ export function StudentManagement() {
             Student Management
           </h1>
           <p className="text-muted-foreground">
-            Manage student records, payments, and information
+            Search, add, and update student records. Track current and former
+            students with full history.
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -397,320 +489,348 @@ export function StudentManagement() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Students
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{students.length}</div>
-            <p className="text-xs text-muted-foreground">Active enrollments</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Payments Up to Date
-            </CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {students.filter((s) => s.paymentStatus === 'paid').length}
-            </div>
-            <p className="text-xs text-muted-foreground">Fully paid students</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Pending Payments
-            </CardTitle>
-            <Clock className="h-4 w-4 text-yellow-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {students.filter((s) => s.paymentStatus === 'pending').length}
-            </div>
-            <p className="text-xs text-muted-foreground">Partial payments</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overdue</CardTitle>
-            <AlertCircle className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {students.filter((s) => s.paymentStatus === 'overdue').length}
-            </div>
-            <p className="text-xs text-muted-foreground">Require attention</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filters and Search */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Search & Filter</CardTitle>
-          <CardDescription>
-            Find and filter students by various criteria
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col space-y-4 md:flex-row md:items-center md:space-y-0 md:space-x-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search by name, email, ID, or parent name..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8"
-                />
-              </div>
-            </div>
-            <div className="flex space-x-2">
-              <Select value={gradeFilter} onValueChange={setGradeFilter}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Grade" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Grades</SelectItem>
-                  <SelectItem value="Grade 6">Grade 6</SelectItem>
-                  <SelectItem value="Grade 7">Grade 7</SelectItem>
-                  <SelectItem value="Grade 8">Grade 8</SelectItem>
-                  <SelectItem value="Grade 9">Grade 9</SelectItem>
-                  <SelectItem value="Grade 10">Grade 10</SelectItem>
-                  <SelectItem value="Grade 11">Grade 11</SelectItem>
-                  <SelectItem value="Grade 12">Grade 12</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={paymentFilter} onValueChange={setPaymentFilter}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Payment" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Payments</SelectItem>
-                  <SelectItem value="paid">Paid</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="overdue">Overdue</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+      <Tabs value={enrollmentTab} onValueChange={setEnrollmentTab}>
+        <TabsList>
+          <TabsTrigger value="current">
+            Current Students (
+            {students.filter((s) => s.enrollmentType === 'current').length})
+          </TabsTrigger>
+          <TabsTrigger value="former">
+            Former Students (
+            {students.filter((s) => s.enrollmentType === 'former').length})
+          </TabsTrigger>
+          <TabsTrigger value="all">All Records ({students.length})</TabsTrigger>
+        </TabsList>
+        <TabsContent value={enrollmentTab} className="space-y-6 mt-6">
+          {/* Stats Cards */}
+          <div className="grid gap-4 md:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Students
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{students.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  Active enrollments
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Payments Up to Date
+                </CardTitle>
+                <CheckCircle className="h-4 w-4 text-green-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {students.filter((s) => s.paymentStatus === 'paid').length}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Fully paid students
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Pending Payments
+                </CardTitle>
+                <Clock className="h-4 w-4 text-yellow-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {students.filter((s) => s.paymentStatus === 'pending').length}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Partial payments
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Overdue</CardTitle>
+                <AlertCircle className="h-4 w-4 text-red-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {students.filter((s) => s.paymentStatus === 'overdue').length}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Require attention
+                </p>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Bulk Actions */}
-      {selectedStudents.length > 0 && (
-        <Card className="border-purple-200 bg-purple-50">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Badge variant="secondary">
-                  {selectedStudents.length} selected
-                </Badge>
-                <span className="text-sm text-muted-foreground">
-                  {selectedStudents.length} student
-                  {selectedStudents.length > 1 ? 's' : ''} selected
-                </span>
-              </div>
-              <div className="flex space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleBulkAction('send-reminder')}
-                >
-                  <Mail className="w-4 h-4 mr-2" />
-                  Send Reminder
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleBulkAction('export')}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Export Selected
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleBulkAction('deactivate')}
-                >
-                  <Users className="w-4 h-4 mr-2" />
-                  Change Status
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSelectedStudents([])}
-                >
-                  Clear Selection
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Students Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Students ({filteredStudents.length})</CardTitle>
-          <CardDescription>
-            Manage student records and information
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={
-                      selectedStudents.length === filteredStudents.length &&
-                      filteredStudents.length > 0
-                    }
-                    onCheckedChange={handleSelectAll}
-                  />
-                </TableHead>
-                <TableHead>Student</TableHead>
-                <TableHead>Grade</TableHead>
-                <TableHead>Parent/Guardian</TableHead>
-                <TableHead>Payment Status</TableHead>
-                <TableHead>Fees</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="w-12">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredStudents.map((student) => (
-                <TableRow key={student.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedStudents.includes(student.id)}
-                      onCheckedChange={(checked) =>
-                        handleSelectStudent(student.id, checked as boolean)
-                      }
+          {/* Filters and Search */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Search & Filter</CardTitle>
+              <CardDescription>
+                Find and filter students by various criteria
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4 md:flex-row md:items-center md:space-y-0 md:space-x-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search by name, email, ID, or parent name..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-8"
                     />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage
-                          src={`/placeholder.svg?height=32&width=32`}
-                          alt={student.name}
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Select value={gradeFilter} onValueChange={setGradeFilter}>
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="Grade" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Grades</SelectItem>
+                      <SelectItem value="Grade 6">Grade 6</SelectItem>
+                      <SelectItem value="Grade 7">Grade 7</SelectItem>
+                      <SelectItem value="Grade 8">Grade 8</SelectItem>
+                      <SelectItem value="Grade 9">Grade 9</SelectItem>
+                      <SelectItem value="Grade 10">Grade 10</SelectItem>
+                      <SelectItem value="Grade 11">Grade 11</SelectItem>
+                      <SelectItem value="Grade 12">Grade 12</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={paymentFilter}
+                    onValueChange={setPaymentFilter}
+                  >
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="Payment" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Payments</SelectItem>
+                      <SelectItem value="paid">Paid</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="overdue">Overdue</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Bulk Actions */}
+          {selectedStudents.length > 0 && (
+            <Card className="border-purple-200 bg-purple-50">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Badge variant="secondary">
+                      {selectedStudents.length} selected
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {selectedStudents.length} student
+                      {selectedStudents.length > 1 ? 's' : ''} selected
+                    </span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleBulkAction('send-reminder')}
+                    >
+                      <Mail className="w-4 h-4 mr-2" />
+                      Send Reminder
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleBulkAction('export')}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export Selected
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleBulkAction('deactivate')}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Change Status
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedStudents([])}
+                    >
+                      Clear Selection
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Students Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Students ({filteredStudents.length})</CardTitle>
+              <CardDescription>
+                Manage student records and information
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
+                      <Checkbox
+                        checked={
+                          selectedStudents.length === filteredStudents.length &&
+                          filteredStudents.length > 0
+                        }
+                        onCheckedChange={handleSelectAll}
+                      />
+                    </TableHead>
+                    <TableHead>Student</TableHead>
+                    <TableHead>Grade</TableHead>
+                    <TableHead>Parent/Guardian</TableHead>
+                    <TableHead>Payment Status</TableHead>
+                    <TableHead>Fees</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="w-12">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredStudents.map((student) => (
+                    <TableRow key={student.id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedStudents.includes(student.id)}
+                          onCheckedChange={(checked) =>
+                            handleSelectStudent(student.id, checked as boolean)
+                          }
                         />
-                        <AvatarFallback>{student.avatar}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{student.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {student.id}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-3">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage
+                              src={`/placeholder.svg?height=32&width=32`}
+                              alt={student.name}
+                            />
+                            <AvatarFallback>{student.avatar}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-medium">{student.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {student.id}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">{student.grade}</div>
-                      <div className="text-sm text-muted-foreground">
-                        Section {student.section}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">{student.parentName}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {student.parentEmail}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {getPaymentStatusBadge(student.paymentStatus)}
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">
-                        ${student.paidAmount} / ${student.totalFees}
-                      </div>
-                      {student.pendingAmount > 0 && (
-                        <div className="text-sm text-red-600">
-                          ${student.pendingAmount} pending
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{student.grade}</div>
+                          <div className="text-sm text-muted-foreground">
+                            Section {student.section}
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>{getStatusBadge(student.status)}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setSelectedStudent(student);
-                            setIsEditDialogOpen(true);
-                          }}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit Student
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <Mail className="mr-2 h-4 w-4" />
-                          Send Email
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Phone className="mr-2 h-4 w-4" />
-                          Call Parent
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href={`/dashboard/students/${student.id}/payments`}
-                          >
-                            <FileText className="mr-2 h-4 w-4" />
-                            Payment History
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete Student
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">
+                            {student.parentName}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {student.parentEmail}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {getPaymentStatusBadge(student.paymentStatus)}
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">
+                            ${student.paidAmount} / ${student.totalFees}
+                          </div>
+                          {student.pendingAmount > 0 && (
+                            <div className="text-sm text-red-600">
+                              ${student.pendingAmount} pending
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>{getStatusBadge(student.status)}</TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedStudent(student);
+                                setIsEditDialogOpen(true);
+                              }}
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit Student
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              <Mail className="mr-2 h-4 w-4" />
+                              Send Email
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Phone className="mr-2 h-4 w-4" />
+                              Call Parent
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <Link
+                                href={`/dashboard/students/${student.id}/payments`}
+                              >
+                                <FileText className="mr-2 h-4 w-4" />
+                                Payment History
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="text-red-600">
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete Student
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
       {/* Student Details Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -873,6 +993,36 @@ export function StudentManagement() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Enrollment History */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <History className="w-4 h-4" />
+                    Enrollment History
+                  </CardTitle>
+                  <CardDescription>
+                    Full record from enrollment
+                    {selectedStudent.graduationDate &&
+                      ` to graduation (${selectedStudent.graduationDate})`}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {selectedStudent.history.map((entry, index) => (
+                      <div key={index} className="flex gap-3">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 mt-2 shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium">{entry.event}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {entry.date}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           )}
           <DialogFooter>

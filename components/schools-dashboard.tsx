@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { SchoolOverviewCards } from '@/components/school-overview-cards';
+import { SchoolQuickAccessBar } from '@/components/school-quick-access-bar';
 import { FinancialAnalytics } from '@/components/financial-analytics';
 import { StudentDemographics } from '@/components/student-demographics';
 import { AcademicPerformance } from '@/components/academic-performance';
@@ -71,15 +72,17 @@ export function SchoolsDashboard({ schoolId }: SchoolsDashboardProps) {
       {/* Overview Cards */}
       <SchoolOverviewCards />
 
+      <SchoolQuickAccessBar />
+
       {/* Main Dashboard Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="financial">Financial</TabsTrigger>
+          <TabsTrigger value="financial">Finance</TabsTrigger>
           <TabsTrigger value="academic">Academic</TabsTrigger>
           <TabsTrigger value="students">Students</TabsTrigger>
-          <TabsTrigger value="staff">Staff</TabsTrigger>
-          <TabsTrigger value="facilities">Facilities</TabsTrigger>
+          <TabsTrigger value="staff">Staff & HR</TabsTrigger>
+          <TabsTrigger value="facilities">Resources</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

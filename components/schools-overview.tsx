@@ -36,11 +36,11 @@ export function SchoolsOverview() {
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Schools Management
+            Schools Management System
           </h1>
           <p className="text-muted-foreground">
-            Comprehensive overview and management of all schools in the
-            SchoolFees network
+            Comprehensive overview and management of all schools in the E-SMS
+            network
           </p>
         </div>
         <div className="flex items-center space-x-2">
