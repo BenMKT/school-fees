@@ -90,7 +90,7 @@ export function TopNavbar() {
                 E-SMS
               </h1>
               <p className="text-xs text-gray-500 -mt-1">
-                Smart Schools Management System
+                Educational - School Management System
               </p>
             </div>
           </Link>

@@ -496,7 +496,7 @@ export default function ContactPage() {
                   >
                     <Users className="w-5 h-5 text-blue-200" />
                     <span className="text-blue-100">
-                      Serving 5,000,000+ students in Uganda
+                      Serving 5,000,000+ students in East Africa
                     </span>
                   </motion.div>
 
