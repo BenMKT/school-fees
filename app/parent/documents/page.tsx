@@ -1,7 +1,3 @@
-'use client';
-
-import { ParentSidebar } from '@/components/parent-sidebar';
-import { ParentHeader } from '@/components/parent-header';
 import {
   Card,
   CardContent,
@@ -19,39 +15,35 @@ const documents = [
 
 export default function ParentDocumentsPage() {
   return (
-    <div className="flex h-screen">
-      <ParentSidebar />
-      <div className="flex-1 flex flex-col">
-        <ParentHeader />
-        <div className="flex-1 p-6 overflow-y-auto space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Documents</h1>
-            <p className="text-muted-foreground">
-              Report cards, receipts, and school forms.
-            </p>
-          </div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Available Documents</CardTitle>
-              <CardDescription>Download and view shared files</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {documents.map((doc) => (
-                <div
-                  key={doc.name}
-                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-                >
-                  <FileText className="w-5 h-5 text-purple-600" />
-                  <div>
-                    <p className="font-medium">{doc.name}</p>
-                    <p className="text-sm text-muted-foreground">{doc.date}</p>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          Documents
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base">
+          Report cards, receipts, and school forms.
+        </p>
       </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Available Documents</CardTitle>
+          <CardDescription>Download and view shared files</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {documents.map((doc) => (
+            <div
+              key={doc.name}
+              className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+            >
+              <FileText className="w-5 h-5 text-purple-600 shrink-0" />
+              <div className="min-w-0">
+                <p className="font-medium truncate">{doc.name}</p>
+                <p className="text-sm text-muted-foreground">{doc.date}</p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 }

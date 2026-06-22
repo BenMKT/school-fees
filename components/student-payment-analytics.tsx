@@ -295,13 +295,25 @@ export function StudentPaymentAnalytics({
         onValueChange={setSelectedTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">Payment History</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
-          <TabsTrigger value="fees">Fee Structure</TabsTrigger>
-          <TabsTrigger value="reminders">Reminders</TabsTrigger>
+        <TabsList className="flex w-full h-auto overflow-x-auto lg:grid lg:grid-cols-6">
+          <TabsTrigger value="overview" className="shrink-0">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="history" className="shrink-0">
+            Payment History
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="shrink-0">
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger value="timeline" className="shrink-0">
+            Timeline
+          </TabsTrigger>
+          <TabsTrigger value="fees" className="shrink-0">
+            Fee Structure
+          </TabsTrigger>
+          <TabsTrigger value="reminders" className="shrink-0">
+            Reminders
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
