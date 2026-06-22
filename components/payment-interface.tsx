@@ -117,11 +117,11 @@ export function PaymentInterface() {
   };
 
   const selectedPaymentDetails = pendingPayments.filter((payment) =>
-    selectedPayments.includes(payment.id)
+    selectedPayments.includes(payment.id),
   );
   const totalAmount = selectedPaymentDetails.reduce(
     (sum, payment) => sum + payment.amount,
-    0
+    0,
   );
 
   const getPriorityBadge = (priority: string) => {
@@ -153,21 +153,35 @@ export function PaymentInterface() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Make Payment</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          Make Payment
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base">
           Select fees to pay and choose your preferred payment method
         </p>
       </div>
 
       <Tabs value={`step-${currentStep}`} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="step-1" disabled={currentStep < 1}>
+        <TabsList className="flex w-full h-auto overflow-x-auto sm:grid sm:grid-cols-3">
+          <TabsTrigger
+            value="step-1"
+            disabled={currentStep < 1}
+            className="shrink-0 sm:shrink"
+          >
             1. Select Fees
           </TabsTrigger>
-          <TabsTrigger value="step-2" disabled={currentStep < 2}>
+          <TabsTrigger
+            value="step-2"
+            disabled={currentStep < 2}
+            className="shrink-0 sm:shrink"
+          >
             2. Payment Method
           </TabsTrigger>
-          <TabsTrigger value="step-3" disabled={currentStep < 3}>
+          <TabsTrigger
+            value="step-3"
+            disabled={currentStep < 3}
+            className="shrink-0 sm:shrink"
+          >
             3. Confirm & Pay
           </TabsTrigger>
         </TabsList>

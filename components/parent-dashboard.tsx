@@ -16,8 +16,10 @@ export function ParentDashboard() {
     <div className="space-y-6">
       {/* Welcome Section */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Parent Dashboard</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          Parent Dashboard
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base">
           Welcome to your parent portal. Track fees, exam results, timetables,
           and school notices for your children.
         </p>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, Search, MessageSquare } from 'lucide-react';
+import { Bell, Search, MessageSquare, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,87 +13,83 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { useParentShell } from '@/components/parent-shell';
 
 export function ParentHeader() {
-  return (
-    <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-      <SidebarTrigger className="-ml-1" />
+  const { openMobileSidebar } = useParentShell();
 
-      <div className="flex flex-1 items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <h1 className="text-xl font-semibold">Welcome back, Robert!</h1>
+  return (
+    <header className="flex h-14 sm:h-16 shrink-0 items-center gap-2 border-b px-3 sm:px-4">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="lg:hidden -ml-1 shrink-0"
+        aria-label="Open menu"
+        onClick={openMobileSidebar}
+      >
+        <Menu className="h-5 w-5" />
+      </Button>
+
+      <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-4">
+          <h1 className="text-base sm:text-xl font-semibold truncate">
+            Welcome back, Robert!
+          </h1>
           <Badge
             variant="outline"
-            className="bg-green-50 text-green-700 border-green-200"
+            className="hidden sm:inline-flex bg-green-50 text-green-700 border-green-200 shrink-0"
           >
             Greenwood High School
           </Badge>
         </div>
 
-        <div className="flex items-center space-x-4">
-          {/* Search */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <div className="relative hidden md:block">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search payments, messages..."
-              className="w-64 pl-8"
+              placeholder="Search..."
+              className="w-48 lg:w-64 pl-8"
             />
           </div>
 
-          {/* Messages */}
-          <Button variant="ghost" size="icon" className="relative">
+          <Button variant="ghost" size="icon" className="relative h-9 w-9">
             <MessageSquare className="h-4 w-4" />
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs bg-blue-500">
+            <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 text-[10px] bg-blue-500">
               3
             </Badge>
           </Button>
 
-          {/* Notifications */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative h-9 w-9">
                 <Bell className="h-4 w-4" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs bg-red-500">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 text-[10px] bg-red-500">
                   5
                 </Badge>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
+            <DropdownMenuContent align="end" className="w-72 sm:w-80">
               <DropdownMenuLabel>Notifications</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium">Payment Due Reminder</p>
                   <p className="text-xs text-muted-foreground">
-                    Emma&apos;s tuition fee is due on Feb 15th - Ksh40000
-                  </p>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium">Message from School</p>
-                  <p className="text-xs text-muted-foreground">
-                    New message about upcoming parent-teacher meeting
-                  </p>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium">Payment Confirmation</p>
-                  <p className="text-xs text-muted-foreground">
-                    Library fee payment received - Ksh20000
+                    Emma&apos;s tuition fee is due on Feb 15th
                   </p>
                 </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Button
+                variant="ghost"
+                className="relative h-8 w-8 rounded-full p-0"
+              >
                 <Avatar className="h-8 w-8">
                   <AvatarImage
                     src="/placeholder.svg?height=32&width=32"

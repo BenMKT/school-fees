@@ -371,20 +371,66 @@ export function StudentManagement() {
     setSelectedStudents([]);
   };
 
+  const renderStudentActions = (student: Student) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() => {
+            setSelectedStudent(student);
+            setIsEditDialogOpen(true);
+          }}
+        >
+          <Eye className="mr-2 h-4 w-4" />
+          View Details
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Edit className="mr-2 h-4 w-4" />
+          Edit Student
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Mail className="mr-2 h-4 w-4" />
+          Send Email
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Phone className="mr-2 h-4 w-4" />
+          Call Parent
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/dashboard/students/${student.id}/payments`}>
+            <FileText className="mr-2 h-4 w-4" />
+            Payment History
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="text-red-600">
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete Student
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             Student Management
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Search, add, and update student records. Track current and former
             students with full history.
           </p>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm">
             <Upload className="w-4 h-4 mr-2" />
             Import
@@ -400,7 +446,7 @@ export function StudentManagement() {
                 Add Student
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Add New Student</DialogTitle>
                 <DialogDescription>
@@ -408,7 +454,7 @@ export function StudentManagement() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Student Name</Label>
                     <Input id="name" placeholder="Enter full name" />
@@ -422,7 +468,7 @@ export function StudentManagement() {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="grade">Grade</Label>
                     <Select>
@@ -454,7 +500,7 @@ export function StudentManagement() {
                     </Select>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="parentName">Parent/Guardian Name</Label>
                     <Input id="parentName" placeholder="Enter parent's name" />
@@ -490,16 +536,18 @@ export function StudentManagement() {
       </div>
 
       <Tabs value={enrollmentTab} onValueChange={setEnrollmentTab}>
-        <TabsList>
-          <TabsTrigger value="current">
+        <TabsList className="flex w-full h-auto overflow-x-auto">
+          <TabsTrigger value="current" className="shrink-0">
             Current Students (
             {students.filter((s) => s.enrollmentType === 'current').length})
           </TabsTrigger>
-          <TabsTrigger value="former">
+          <TabsTrigger value="former" className="shrink-0">
             Former Students (
             {students.filter((s) => s.enrollmentType === 'former').length})
           </TabsTrigger>
-          <TabsTrigger value="all">All Records ({students.length})</TabsTrigger>
+          <TabsTrigger value="all" className="shrink-0">
+            All Records ({students.length})
+          </TabsTrigger>
         </TabsList>
         <TabsContent value={enrollmentTab} className="space-y-6 mt-6">
           {/* Stats Cards */}
@@ -587,7 +635,7 @@ export function StudentManagement() {
                     />
                   </div>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex flex-wrap gap-2">
                   <Select value={gradeFilter} onValueChange={setGradeFilter}>
                     <SelectTrigger className="w-32">
                       <SelectValue placeholder="Grade" />
@@ -636,7 +684,7 @@ export function StudentManagement() {
           {selectedStudents.length > 0 && (
             <Card className="border-purple-200 bg-purple-50">
               <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center space-x-2">
                     <Badge variant="secondary">
                       {selectedStudents.length} selected
@@ -646,7 +694,7 @@ export function StudentManagement() {
                       {selectedStudents.length > 1 ? 's' : ''} selected
                     </span>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       size="sm"
@@ -693,140 +741,157 @@ export function StudentManagement() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-12">
-                      <Checkbox
-                        checked={
-                          selectedStudents.length === filteredStudents.length &&
-                          filteredStudents.length > 0
-                        }
-                        onCheckedChange={handleSelectAll}
-                      />
-                    </TableHead>
-                    <TableHead>Student</TableHead>
-                    <TableHead>Grade</TableHead>
-                    <TableHead>Parent/Guardian</TableHead>
-                    <TableHead>Payment Status</TableHead>
-                    <TableHead>Fees</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="w-12">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredStudents.map((student) => (
-                    <TableRow key={student.id}>
-                      <TableCell>
+              <div className="hidden lg:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-12">
+                        <Checkbox
+                          checked={
+                            selectedStudents.length ===
+                              filteredStudents.length &&
+                            filteredStudents.length > 0
+                          }
+                          onCheckedChange={handleSelectAll}
+                        />
+                      </TableHead>
+                      <TableHead>Student</TableHead>
+                      <TableHead>Grade</TableHead>
+                      <TableHead>Parent/Guardian</TableHead>
+                      <TableHead>Payment Status</TableHead>
+                      <TableHead>Fees</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="w-12">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredStudents.map((student) => (
+                      <TableRow key={student.id}>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedStudents.includes(student.id)}
+                            onCheckedChange={(checked) =>
+                              handleSelectStudent(
+                                student.id,
+                                checked as boolean,
+                              )
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center space-x-3">
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage
+                                src={`/placeholder.svg?height=32&width=32`}
+                                alt={student.name}
+                              />
+                              <AvatarFallback>{student.avatar}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="font-medium">{student.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {student.id}
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{student.grade}</div>
+                            <div className="text-sm text-muted-foreground">
+                              Section {student.section}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">
+                              {student.parentName}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {student.parentEmail}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {getPaymentStatusBadge(student.paymentStatus)}
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">
+                              ${student.paidAmount} / ${student.totalFees}
+                            </div>
+                            {student.pendingAmount > 0 && (
+                              <div className="text-sm text-red-600">
+                                ${student.pendingAmount} pending
+                              </div>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>{getStatusBadge(student.status)}</TableCell>
+                        <TableCell>{renderStudentActions(student)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              <div className="lg:hidden space-y-3">
+                {filteredStudents.map((student) => (
+                  <div
+                    key={student.id}
+                    className="rounded-lg border p-4 space-y-3"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-3 min-w-0">
                         <Checkbox
                           checked={selectedStudents.includes(student.id)}
                           onCheckedChange={(checked) =>
                             handleSelectStudent(student.id, checked as boolean)
                           }
                         />
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage
-                              src={`/placeholder.svg?height=32&width=32`}
-                              alt={student.name}
-                            />
-                            <AvatarFallback>{student.avatar}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="font-medium">{student.name}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {student.id}
-                            </div>
-                          </div>
+                        <Avatar className="h-10 w-10 shrink-0">
+                          <AvatarImage
+                            src={`/placeholder.svg?height=40&width=40`}
+                            alt={student.name}
+                          />
+                          <AvatarFallback>{student.avatar}</AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <p className="font-medium truncate">{student.name}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {student.id} · {student.grade} Section{' '}
+                            {student.section}
+                          </p>
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{student.grade}</div>
-                          <div className="text-sm text-muted-foreground">
-                            Section {student.section}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">
-                            {student.parentName}
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            {student.parentEmail}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
+                      </div>
+                      {renderStudentActions(student)}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-muted-foreground">Parent</p>
+                        <p className="font-medium truncate">
+                          {student.parentName}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Payment</p>
                         {getPaymentStatusBadge(student.paymentStatus)}
-                      </TableCell>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">
-                            ${student.paidAmount} / ${student.totalFees}
-                          </div>
-                          {student.pendingAmount > 0 && (
-                            <div className="text-sm text-red-600">
-                              ${student.pendingAmount} pending
-                            </div>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>{getStatusBadge(student.status)}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setSelectedStudent(student);
-                                setIsEditDialogOpen(true);
-                              }}
-                            >
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Student
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                              <Mail className="mr-2 h-4 w-4" />
-                              Send Email
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Phone className="mr-2 h-4 w-4" />
-                              Call Parent
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link
-                                href={`/dashboard/students/${student.id}/payments`}
-                              >
-                                <FileText className="mr-2 h-4 w-4" />
-                                Payment History
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete Student
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Fees</p>
+                        <p className="font-medium">
+                          ${student.paidAmount} / ${student.totalFees}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Status</p>
+                        {getStatusBadge(student.status)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -834,7 +899,7 @@ export function StudentManagement() {
 
       {/* Student Details Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Student Details</DialogTitle>
             <DialogDescription>

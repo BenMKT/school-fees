@@ -44,16 +44,16 @@ export function SchoolsDashboard({ schoolId }: SchoolsDashboardProps) {
   return (
     <div className="space-y-6">
       {/* Header with Back Button */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Link href="/dashboard/schools">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 min-w-0">
+          <Link href="/dashboard/schools" className="shrink-0">
             <Button variant="outline" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Schools
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight truncate">
               {schoolData.name}
             </h1>
             <div className="flex items-center space-x-2">
@@ -76,13 +76,25 @@ export function SchoolsDashboard({ schoolId }: SchoolsDashboardProps) {
 
       {/* Main Dashboard Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="financial">Finance</TabsTrigger>
-          <TabsTrigger value="academic">Academic</TabsTrigger>
-          <TabsTrigger value="students">Students</TabsTrigger>
-          <TabsTrigger value="staff">Staff & HR</TabsTrigger>
-          <TabsTrigger value="facilities">Resources</TabsTrigger>
+        <TabsList className="flex w-full h-auto overflow-x-auto lg:grid lg:grid-cols-6">
+          <TabsTrigger value="overview" className="shrink-0">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="financial" className="shrink-0">
+            Finance
+          </TabsTrigger>
+          <TabsTrigger value="academic" className="shrink-0">
+            Academic
+          </TabsTrigger>
+          <TabsTrigger value="students" className="shrink-0">
+            Students
+          </TabsTrigger>
+          <TabsTrigger value="staff" className="shrink-0">
+            Staff & HR
+          </TabsTrigger>
+          <TabsTrigger value="facilities" className="shrink-0">
+            Resources
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

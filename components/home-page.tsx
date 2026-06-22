@@ -272,7 +272,7 @@ export default function ESchoolManagerLanding() {
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Educational Schools Management System (E-SMS)
+                E-SMS
               </span>
             </motion.div>
 
@@ -609,7 +609,8 @@ export default function ESchoolManagerLanding() {
             >
               <Badge className="mb-4 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200">
                 <Sparkles className="w-3 h-3 mr-1 inline" />
-                Why Schools Choose E-SMS
+                Why Schools Choose Educational - School Management System
+                (E-SMS)
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 All-in-One Platform.
